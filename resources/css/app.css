@@ -1,0 +1,512 @@
+@import 'tailwindcss';
+
+/* Smooth scrolling for navigation links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Welcome Page Specific Styles */
+
+/* Hero Section Background */
+.hero-section {
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+/* Hero Logo Styling */
+.hero-logo {
+    opacity: 0.7;
+    filter: brightness(1.2) contrast(0.9);
+}
+
+/* Section Title Underlines */
+.section-title {
+    position: relative;
+    display: inline-block;
+}
+
+.section-title-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0.5px;
+    background: linear-gradient(to right, var(--underline-color), transparent);
+    transform: scaleX(0);
+    transition: transform 0.7s ease;
+    transform-origin: left;
+}
+
+.group:hover .section-title-underline {
+    transform: scaleX(1);
+}
+
+/* About Section - Green Underline */
+.about-section .section-title-underline {
+    --underline-color: #10b981; /* green-500 */
+}
+
+/* How It Works Section - Blue Underline */
+.how-it-works-section .section-title-underline {
+    --underline-color: #3b82f6; /* blue-500 */
+}
+
+/* Card Hover Effects */
+.card-hover-effect {
+    transition: all 0.3s ease;
+}
+
+.card-hover-effect:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon Scale on Hover */
+.icon-scale {
+    transition: transform 0.3s ease;
+}
+
+.group:hover .icon-scale {
+    transform: scale(1.1);
+}
+
+/* Button Hover Effects */
+.btn-scale {
+    transition: all 0.3s ease;
+}
+
+.btn-scale:hover {
+    transform: scale(1.05);
+}
+
+.btn-scale:hover.btn-shadow {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Navigation Link Underlines */
+.nav-link-custom {
+    position: relative;
+    transition: color 0.3s ease;
+}
+
+.nav-link-underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #10b981;
+    transition: width 0.3s ease;
+}
+
+.nav-link-custom:hover .nav-link-underline {
+    width: 100%;
+}
+
+/* Mobile Navigation */
+.mobile-nav-link-custom {
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-link-custom:hover {
+    background-color: #f9fafb;
+    color: #10b981;
+}
+
+/* Active Navigation States */
+.nav-link-active {
+    color: #10b981 !important;
+}
+
+.nav-link-active .nav-link-underline {
+    width: 100% !important;
+}
+
+.mobile-nav-active {
+    color: #10b981 !important;
+    background-color: #f0fdf4 !important;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+/* Smooth scrolling for navigation links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom animations and transitions */
+.hero-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Enhanced hover effects for cards */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Button animations */
+.btn-animate {
+    transition: all 0.3s ease;
+}
+
+.btn-animate:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile menu animations */
+.mobile-menu-enter {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Back to top button animation */
+.back-to-top-show {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading animation for weather data */
+.weather-loading {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .5;
+    }
+}
+
+/* Responsive spacing for auth pages to prevent navbar overlap */
+.auth-page-section {
+    padding-top: 6rem; /* 96px - increased to prevent navbar overlap */
+}
+
+@media (max-width: 640px) {
+    .auth-page-section {
+        padding-top: 7rem; /* 112px - extra space for mobile */
+    }
+    
+    /* When mobile menu is open, add more spacing to prevent content overlap */
+    body.mobile-menu-open .auth-page-section {
+        padding-top: 14rem; /* 224px - account for expanded mobile menu */
+    }
+    
+    /* Ensure form containers don't overflow on small screens */
+    .auth-page-section .max-w-md {
+        max-width: 100%;
+    }
+    
+    /* Adjust form padding for mobile */
+    .auth-page-section .bg-white {
+        padding: 1.5rem;
+    }
+}
+
+@media (min-width: 641px) and (max-width: 768px) {
+    .auth-page-section {
+        padding-top: 8rem; /* 128px - tablet spacing */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .auth-page-section {
+        padding-top: 10rem; /* 160px - small desktop spacing */
+    }
+}
+
+@media (min-width: 1025px) {
+    .auth-page-section {
+        padding-top: 12rem; /* 192px - large desktop spacing */
+    }
+}
+
+/* Mobile menu height management */
+#mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+}
+
+#mobile-menu.show {
+    max-height: 400px; /* Adjust based on your menu content */
+}
+
+/* Smooth transitions for auth page content */
+.auth-page-section {
+    transition: padding-top 0.3s ease-in-out;
+}
+
+/* Prevent content shift when mobile menu opens */
+body.mobile-menu-open {
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Hero background image */
+.hero-background {
+    background-image: url('../images/background-image.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Navigation active state */
+.nav-link.active {
+    color: #059669 !important;
+}
+
+.nav-link.active::after {
+    width: 100% !important;
+}
+
+/* Mobile navigation active state */
+.mobile-nav-link.active {
+    color: #059669 !important;
+    background-color: #f0fdf4 !important;
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced mobile menu animation */
+#mobile-menu {
+    transition: all 0.3s ease-in-out;
+}
+
+#mobile-menu.show {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modern animations for enhanced sections */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Timeline animations */
+.timeline-dot {
+    animation: pulse 2s infinite;
+}
+
+.timeline-line {
+    background: linear-gradient(180deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%);
+    animation: glow 3s ease-in-out infinite;
+}
+
+/* Card entrance animations */
+.card-entrance-left {
+    animation: slideInLeft 0.6s ease-out;
+}
+
+.card-entrance-right {
+    animation: slideInRight 0.6s ease-out;
+}
+
+/* Icon floating animation */
+.icon-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Gradient text animation */
+.gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 3s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Enhanced hover effects */
+.card-lift {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-lift:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Micro-interactions */
+.micro-bounce {
+    transition: transform 0.2s ease;
+}
+
+.micro-bounce:hover {
+    transform: scale(1.05);
+}
+
+.micro-bounce:active {
+    transform: scale(0.98);
+}
+
+/* Staggered animations for cards */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* Responsive typography */
+@media (max-width: 768px) {
+    .responsive-text {
+        font-size: 0.875rem;
+    }
+}
+
+/* Glass morphism effect */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Technology-inspired gradients */
+.tech-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+}
+
+.tech-gradient-alt {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+/* Loading skeleton animation */
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 1000px 100%;
+    animation: shimmer 2s infinite;
+}
