@@ -16,45 +16,41 @@ COPY . .
 RUN npm run build
 
 # PHP stage for the application
-FROM dunglas/frankenphp:php8.2-bookworm
-
-# Set working directory
-WORKDIR /app
+FROM php:8.2-fpm
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
-    unzip \
-    zip \
-    libzip-dev \
+    curl \
     libpng-dev \
     libonig-dev \
-    curl \
-    && docker-php-ext-install pdo_mysql zip gd mbstring \
-    && pecl install redis \
-    && docker-php-ext-enable redis
+    libxml2-dev \
+    zip \
+    unzip \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Install Composer
+# Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy Composer files and application code
-COPY composer.json composer.lock ./
-COPY . .
+# Set working directory
+WORKDIR /app
 
-# Create .env file from example
-RUN cp .env.example .env
+# Copy Composer files first for better caching
+COPY composer.json composer.lock ./
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Copy application code
+COPY . .
+
 # Copy built assets from Node.js stage
 COPY --from=node-builder /app/public/build ./public/build
 
-# Copy Caddyfile
-COPY Caddyfile ./
+# Create .env file from example
+RUN cp .env.example .env
 
 # Laravel optimizations
-RUN php artisan config:clear
 RUN php artisan config:cache
 RUN php artisan route:cache
 RUN php artisan view:cache
@@ -66,13 +62,10 @@ RUN php artisan key:generate --force
 # Set permissions
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
-
-# Copy startup script and make executable
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
+RUN chmod -R 755 /app/bootstrap/cache
 
 # Expose port
-EXPOSE 8080
+EXPOSE 9000
 
-# Start command
-ENTRYPOINT ["/start.sh"]
+# Start PHP-FPM
+CMD ["php-fpm"]
