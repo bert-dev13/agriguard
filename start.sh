@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# Wait for database to be ready
+echo "Waiting for database connection..."
+sleep 5
+
+# Run database migrations
+echo "Running database migrations..."
+php artisan migrate --force
+
 # Start FrankenPHP in background
 frankenphp run --config /app/Caddyfile &
 

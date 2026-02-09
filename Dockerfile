@@ -63,9 +63,6 @@ RUN php artisan storage:link
 # Generate APP_KEY if not exists
 RUN php artisan key:generate --force
 
-# Run database migrations
-RUN php artisan migrate --force
-
 # Set permissions
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
