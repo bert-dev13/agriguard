@@ -1,9 +1,27 @@
+# Node.js stage for building frontend
+FROM node:18-alpine AS node-builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install Node.js dependencies
+RUN npm ci
+
+# Copy application code
+COPY . .
+
+# Build frontend assets
+RUN npm run build
+
+# PHP stage for the application
 FROM dunglas/frankenphp:php8.2-bookworm
 
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies and Node.js
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -11,20 +29,13 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     libonig-dev \
-    curl \
-    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
     && docker-php-ext-install pdo_mysql zip gd mbstring
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy package files
-COPY package*.json ./
+# Copy Composer files
 COPY composer.json composer.lock ./
-
-# Install Node.js dependencies
-RUN npm ci
 
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
@@ -32,8 +43,10 @@ RUN composer install --no-dev --optimize-autoloader
 # Copy application code
 COPY . .
 
-# Build frontend assets
-RUN npm run build
+# Copy built assets from Node.js stage
+COPY --from=node-builder /app/public/build ./public/build
+COPY --from=node-builder /app/public/hot ./public/hot
+COPY --from=node-builder /app/vendor ./vendor
 
 # Laravel optimizations
 RUN php artisan config:clear
