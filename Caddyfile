@@ -1,0 +1,6 @@
+:{$PORT}
+
+root * /app/public
+encode gzip zstd
+
+php_server

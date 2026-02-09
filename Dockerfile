@@ -44,6 +44,9 @@ RUN composer install --no-dev --optimize-autoloader
 # Copy built assets from Node.js stage
 COPY --from=node-builder /app/public/build ./public/build
 
+# Copy Caddyfile
+COPY Caddyfile ./
+
 # Laravel optimizations
 RUN php artisan config:clear
 RUN php artisan config:cache
@@ -59,4 +62,4 @@ RUN chmod -R 755 /app/storage
 EXPOSE 8080
 
 # Start command
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
+CMD ["frankenphp", "run", "--config", "/app/Caddyfile"]
