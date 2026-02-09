@@ -5,7 +5,10 @@ nixPkgs = ["php82", "php82Packages.composer", "nodejs_18"]
 cmds = [
     "composer install --no-dev --optimize-autoloader",
     "npm install",
-    "npm run build"
+    "npm run build",
+    "php artisan config:clear",
+    "php artisan config:cache",
+    "php artisan storage:link"
 ]
 
 [start]
