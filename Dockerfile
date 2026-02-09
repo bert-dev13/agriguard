@@ -29,7 +29,10 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     libonig-dev \
-    && docker-php-ext-install pdo_mysql zip gd mbstring
+    libredis-dev \
+    redis-tools \
+    curl \
+    && docker-php-ext-install pdo_mysql zip gd mbstring bcmath redis
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -54,16 +57,22 @@ RUN php artisan route:cache
 RUN php artisan view:cache
 RUN php artisan storage:link
 
+# Generate APP_KEY if not exists
+RUN php artisan key:generate --force
+
+# Run database migrations
+RUN php artisan migrate --force
+
 # Set permissions
 RUN chown -R www-data:www-data /app
 RUN chmod -R 755 /app/storage
 
+# Copy startup script and make executable
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 # Expose port
 EXPOSE 8080
 
-# Healthcheck with startup delay
-HEALTHCHECK --interval=5s --timeout=3s --start-period=15s --retries=20 \
-    CMD curl -f http://localhost/health || exit 1
-
 # Start command
-CMD ["frankenphp", "run", "--config", "/app/Caddyfile"]
+CMD ["/start.sh"]
