@@ -1,5 +1,6 @@
 {
   "deploy": {
+    "startCommand": "frankenphp run --config /app/Caddyfile",
     "healthcheckPath": "/",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
