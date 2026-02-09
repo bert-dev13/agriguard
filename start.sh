@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Create nginx PID directory
+mkdir -p /var/run/nginx
+
+# Start nginx in background
+nginx -g "daemon off;" &
+
 # Wait for database to be ready
 echo "Waiting for database connection..."
 sleep 5

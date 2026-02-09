@@ -1,32 +1,16 @@
-# Node.js stage for building frontend
-FROM node:18-alpine AS node-builder
+# Use official PHP image with common extensions
+FROM php:8.2-fpm-alpine
 
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install Node.js dependencies
-RUN npm ci
-
-# Copy application code
-COPY . .
-
-# Build frontend assets
-RUN npm run build
-
-# PHP stage for the application
-FROM php:8.2-fpm
-
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies and nginx
+RUN apk add --no-cache \
     git \
     curl \
     libpng-dev \
-    libonig-dev \
+    oniguruma-dev \
     libxml2-dev \
     zip \
     unzip \
+    nginx \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 # Get latest Composer
@@ -39,25 +23,19 @@ WORKDIR /app
 COPY composer.json composer.lock ./
 
 # Install PHP dependencies
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader --no-interaction
 
 # Copy application code
 COPY . .
 
-# Copy built assets from Node.js stage
-COPY --from=node-builder /app/public/build ./public/build
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Create .env file from example
 RUN cp .env.example .env
 
-# Laravel optimizations
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
-RUN php artisan storage:link
-
 # Generate APP_KEY if not exists
-RUN php artisan key:generate --force
+RUN php artisan key:generate
 
 # Set permissions
 RUN chown -R www-data:www-data /app
@@ -65,7 +43,11 @@ RUN chmod -R 755 /app/storage
 RUN chmod -R 755 /app/bootstrap/cache
 
 # Expose port
-EXPOSE 9000
+EXPOSE 8080
 
-# Start PHP-FPM
-CMD ["php-fpm"]
+# Copy startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
+# Start command
+CMD ["/start.sh"]
