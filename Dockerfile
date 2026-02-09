@@ -3,7 +3,7 @@ FROM dunglas/frankenphp:php8.2-bookworm
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
+# Install system dependencies and Node.js
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     libonig-dev \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
     && docker-php-ext-install pdo_mysql zip gd mbstring
 
 # Install Composer
