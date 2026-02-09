@@ -37,11 +37,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy Composer files
 COPY composer.json composer.lock ./
 
+# Copy application code first (needed for artisan file during composer install)
+COPY . .
+
 # Install PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
-
-# Copy application code
-COPY . .
 
 # Copy built assets from Node.js stage
 COPY --from=node-builder /app/public/build ./public/build
