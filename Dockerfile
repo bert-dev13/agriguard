@@ -75,4 +75,4 @@ RUN chmod +x /start.sh
 EXPOSE 8080
 
 # Start command
-CMD ["/start.sh"]
+ENTRYPOINT ["/start.sh"]

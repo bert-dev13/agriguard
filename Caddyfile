@@ -1,6 +1,11 @@
-{$PORT}
+{$PORT:8080}
 
 root * /app/public
 encode gzip zstd
 
 php_server
+
+# Health check endpoint
+handle /health {
+    php_server
+}
