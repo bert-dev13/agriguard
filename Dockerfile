@@ -34,10 +34,8 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy Composer files
+# Copy Composer files and application code
 COPY composer.json composer.lock ./
-
-# Copy application code first (needed for artisan file during composer install)
 COPY . .
 
 # Install PHP dependencies
