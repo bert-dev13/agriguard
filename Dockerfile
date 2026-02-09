@@ -61,5 +61,9 @@ RUN chmod -R 755 /app/storage
 # Expose port
 EXPOSE 8080
 
+# Healthcheck with startup delay
+HEALTHCHECK --interval=5s --timeout=3s --start-period=15s --retries=20 \
+    CMD curl -f http://localhost/health || exit 1
+
 # Start command
 CMD ["frankenphp", "run", "--config", "/app/Caddyfile"]
