@@ -45,8 +45,6 @@ COPY . .
 
 # Copy built assets from Node.js stage
 COPY --from=node-builder /app/public/build ./public/build
-COPY --from=node-builder /app/public/hot ./public/hot
-COPY --from=node-builder /app/vendor ./vendor
 
 # Laravel optimizations
 RUN php artisan config:clear
