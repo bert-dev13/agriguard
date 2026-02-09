@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libpng-dev \
     libonig-dev \
-    libredis-dev \
+    libredis5-dev \
     redis-tools \
     curl \
     && docker-php-ext-install pdo_mysql zip gd mbstring bcmath redis
